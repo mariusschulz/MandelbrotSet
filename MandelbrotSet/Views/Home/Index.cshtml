@@ -1,7 +1,17 @@
 ﻿@model dynamic
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Mandelbrot Set";
 }
 
-<h2>title</h2>
+<h2>@ViewBag.Title</h2>
+
+@section scripts
+{
+    @Html.CombresLink("scripts")
+}
+
+@section stylesheets
+{
+    @Html.CombresLink("stylesheets")
+}
