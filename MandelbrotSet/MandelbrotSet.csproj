@@ -156,6 +156,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Content\Stylesheets\Reset.less" />
+    <Content Include="Content\Stylesheets\Headings.less" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
