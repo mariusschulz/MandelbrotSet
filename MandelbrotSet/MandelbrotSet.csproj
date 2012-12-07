@@ -149,6 +149,10 @@
     <Content Include="Scripts\Libraries\jQuery\jquery.d.ts" />
     <Content Include="Scripts\Libraries\knockout.js\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\Libraries\knockout.js\knockout.d.ts" />
+    <Content Include="Scripts\Views\Home\ComplexNumber.js">
+      <DependentUpon>ComplexNumber.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Views\Home\ComplexNumber.ts" />
     <Content Include="Scripts\Views\Home\Index.js">
       <DependentUpon>Index.ts</DependentUpon>
     </Content>
