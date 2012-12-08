@@ -8,15 +8,11 @@ class MandelbrotViewModel {
     }
 
     plot(topLeft: ComplexNumber, bottomRight: ComplexNumber) {
-        var params = {
-            width: this.width,
-            height: this.height,
-            topLeft: topLeft,
-            bottomRight: bottomRight
-        };
-
         var $canvas = $("#mandelbrot-canvas");
-        $canvas.attr("src", $canvas.data("drawingActionUrl") + "?" + $.param(params));
+        $canvas.attr("src", $canvas.data("drawingActionUrl") + "/"
+            + this.width + "-" + this.height + "/"
+            + "(" + topLeft.getRealPart() + "," + topLeft.getImaginaryPart() + ")-"
+            + "(" + bottomRight.getRealPart() + "," + bottomRight.getImaginaryPart() + ")");
     }
 }
 

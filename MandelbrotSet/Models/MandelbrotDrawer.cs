@@ -6,17 +6,14 @@ namespace MandelbrotSet.Models
 {
     public class MandelbrotDrawer
     {
-        private Size _imageSize;
         public byte[] ImageBytes { get; set; }
 
-        public void Draw(Size imageSize, ComplexNumber upperLeft, ComplexNumber bottomRight)
+        public void Draw(Size imageSize, ComplexNumber topLeft, ComplexNumber bottomRight, int maxIterationDepth = 199, double threshold = 2.0)
         {
-            _imageSize = imageSize;
+            double realRange = bottomRight.RealPart - topLeft.RealPart;
+            double imaginaryRange = topLeft.ImaginaryPart - bottomRight.ImaginaryPart;
 
-            double realRange = bottomRight.RealPart - upperLeft.RealPart;
-            double imaginaryRange = upperLeft.ImaginaryPart - bottomRight.ImaginaryPart;
-
-            var mandelbrotComputer = new MandelbrotComputer();
+            var mandelbrotComputer = new MandelbrotComputer(maxIterationDepth, threshold);
 
             using (var bitmap = new Bitmap(imageSize.Width, imageSize.Height))
             using (var graphics = Graphics.FromImage(bitmap))
@@ -27,7 +24,16 @@ namespace MandelbrotSet.Models
                 {
                     for (int y = 0; y < imageSize.Height; y++)
                     {
-                        //mandelbrotComputer.ComputeNumberOfIterations(x, y);
+                        double realPart = topLeft.RealPart + x * realRange / imageSize.Width;
+                        double imaginaryPart = topLeft.ImaginaryPart - y * imaginaryRange / imageSize.Height;
+
+                        var z = new ComplexNumber(realPart, imaginaryPart);
+
+                        int iterations = mandelbrotComputer.ComputeIterationDepthFor(z);
+
+                        var pen = iterations < maxIterationDepth ? Pens.Black : Pens.White;
+
+                        graphics.DrawRectangle(pen, x, y, 2, 2);
                     }
                 }
 

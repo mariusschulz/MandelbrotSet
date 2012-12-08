@@ -6,9 +6,12 @@ namespace MandelbrotSet.Controllers
 {
     public class MandelbrotController : Controller
     {
-        public ActionResult Drawing(int width, int height, ComplexNumber topLeft, ComplexNumber bottomRight)
+        public ActionResult Drawing(int width, int height, double realFrom, double realTo, double imaginaryFrom, double imaginaryTo)
         {
             var imageSize = GetImageSize(width, height);
+            
+            var topLeft = new ComplexNumber(realFrom, imaginaryFrom);
+            var bottomRight = new ComplexNumber(realTo, imaginaryTo);
             
             var mandelbrotDrawer = new MandelbrotDrawer();
             mandelbrotDrawer.Draw(imageSize, topLeft, bottomRight);

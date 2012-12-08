@@ -1,20 +1,36 @@
-﻿namespace MandelbrotSet.Models
+﻿using System;
+
+namespace MandelbrotSet.Models
 {
-    public class ComplexNumber
+    public struct ComplexNumber
     {
-        public double RealPart { get; set; }
-        public double ImaginaryPart { get; set; }
+        private readonly double _realPart;
+        public double RealPart { get { return _realPart; } }
 
-        public ComplexNumber()
-            : this(0, 0)
+        private readonly double _imaginaryPart;
+        public double ImaginaryPart { get { return _imaginaryPart; } }
+
+        public double AbsoluteValue
         {
-
+            get { return Math.Sqrt(RealPart * RealPart + ImaginaryPart * ImaginaryPart); }
         }
 
         public ComplexNumber(double realPart, double imaginaryPart)
         {
-            RealPart = realPart;
-            ImaginaryPart = imaginaryPart;
+            _realPart = realPart;
+            _imaginaryPart = imaginaryPart;
+        }
+
+        public ComplexNumber Add(ComplexNumber other)
+        {
+            return new ComplexNumber(RealPart + other.RealPart, ImaginaryPart + other.ImaginaryPart);
+        }
+
+        public ComplexNumber Multiply(ComplexNumber other)
+        {
+            return new ComplexNumber(
+                RealPart * other.RealPart - ImaginaryPart * other.ImaginaryPart,
+                RealPart * other.ImaginaryPart + ImaginaryPart * other.RealPart);
         }
     }
 }
