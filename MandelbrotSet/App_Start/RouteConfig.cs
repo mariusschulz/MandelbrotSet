@@ -9,7 +9,10 @@ namespace MandelbrotSet
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("MandelbrotDrawing", "mandelbrot/drawing/{width}-{height}/({realFrom},{imaginaryFrom})-({realTo},{imaginaryTo})",
+            routes.MapRoute("MandelbrotDrawing", "mandelbrot/drawing/"
+                + "{width}-{height}/"
+                + "({realFrom},{imaginaryFrom})-({realTo},{imaginaryTo})/"
+                + "({maxIterationDepth},{threshold})",
                 new { controller = "mandelbrot", action = "drawing" }
             );
 

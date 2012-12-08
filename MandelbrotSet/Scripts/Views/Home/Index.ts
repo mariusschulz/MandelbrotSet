@@ -7,18 +7,31 @@ class MandelbrotViewModel {
 
     }
 
-    plot(topLeft: ComplexNumber, bottomRight: ComplexNumber) {
+    plot(topLeft: ComplexNumber, bottomRight: ComplexNumber, maxIterationDepth: number, threshold: number) {
         var $canvas = $("#mandelbrot-canvas");
         $canvas.attr("src", $canvas.data("drawingActionUrl") + "/"
             + this.width + "-" + this.height + "/"
             + "(" + topLeft.getRealPart() + "," + topLeft.getImaginaryPart() + ")-"
-            + "(" + bottomRight.getRealPart() + "," + bottomRight.getImaginaryPart() + ")");
+            + "(" + bottomRight.getRealPart() + "," + bottomRight.getImaginaryPart() + ")" + "/"
+            + "(" + maxIterationDepth + "," + threshold + ")");
     }
 }
 
 $(function () {
-    var viewModel = new MandelbrotViewModel(581, 400);
+    var realFrom = -2.1,
+        imaginaryFrom = 1.1,
+        realTo = 1.1,
+        imaginaryTo = -1.1;
+
+    var aspectRatio = (realTo - realFrom) / (imaginaryFrom - imaginaryTo),
+        width = 1200,
+        height = Math.round(width / aspectRatio);
+
+    var viewModel = new MandelbrotViewModel(width, height);
     ko.applyBindings(viewModel, document.getElementById("mandelbrot-plot"));
 
-    viewModel.plot(new ComplexNumber(-2.1, 1.1), new ComplexNumber(1.1, -1.1));
+    var topLeft = new ComplexNumber(realFrom, imaginaryFrom),
+        bottomRight = new ComplexNumber(realTo, imaginaryTo);
+
+    viewModel.plot(topLeft, bottomRight, 199, 2);
 });

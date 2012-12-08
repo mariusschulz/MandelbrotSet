@@ -1,6 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MandelbrotSet.Models
 {
@@ -15,25 +17,33 @@ namespace MandelbrotSet.Models
 
             var mandelbrotComputer = new MandelbrotComputer(maxIterationDepth, threshold);
 
+            int[,] iterations = new int[imageSize.Width, imageSize.Height];
+            Parallel.For(0, imageSize.Width, x => Parallel.For(0, imageSize.Height, y =>
+            {
+                double realPart = topLeft.RealPart + x * realRange / imageSize.Width;
+                double imaginaryPart = topLeft.ImaginaryPart - y * imaginaryRange / imageSize.Height;
+
+                var z = new ComplexNumber(realPart, imaginaryPart);
+
+                iterations[x, y] = mandelbrotComputer.ComputeIterationDepthFor(z);
+            }));
+
             using (var bitmap = new Bitmap(imageSize.Width, imageSize.Height))
             using (var graphics = Graphics.FromImage(bitmap))
             {
-                graphics.Clear(Color.Black);
-
                 for (int x = 0; x < imageSize.Width; x++)
                 {
                     for (int y = 0; y < imageSize.Height; y++)
                     {
-                        double realPart = topLeft.RealPart + x * realRange / imageSize.Width;
-                        double imaginaryPart = topLeft.ImaginaryPart - y * imaginaryRange / imageSize.Height;
+                        int iterationDepth = iterations[x, y];
+                        var color = iterationDepth == maxIterationDepth
+                            ? Color.Black
+                            : Color.FromArgb(255, 0, (int)Math.Floor(255.0 * iterationDepth / maxIterationDepth), 0);
 
-                        var z = new ComplexNumber(realPart, imaginaryPart);
-
-                        int iterations = mandelbrotComputer.ComputeIterationDepthFor(z);
-
-                        var pen = iterations < maxIterationDepth ? Pens.Black : Pens.White;
-
-                        graphics.DrawRectangle(pen, x, y, 2, 2);
+                        using (var pen = new Pen(color))
+                        {
+                            graphics.DrawRectangle(pen, x, y, 2, 2);
+                        }
                     }
                 }
 

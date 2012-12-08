@@ -6,7 +6,8 @@ namespace MandelbrotSet.Controllers
 {
     public class MandelbrotController : Controller
     {
-        public ActionResult Drawing(int width, int height, double realFrom, double realTo, double imaginaryFrom, double imaginaryTo)
+        public ActionResult Drawing(int width, int height, int maxIterationDepth, double threshold,
+            double realFrom, double realTo, double imaginaryFrom, double imaginaryTo)
         {
             var imageSize = GetImageSize(width, height);
             
@@ -14,7 +15,7 @@ namespace MandelbrotSet.Controllers
             var bottomRight = new ComplexNumber(realTo, imaginaryTo);
             
             var mandelbrotDrawer = new MandelbrotDrawer();
-            mandelbrotDrawer.Draw(imageSize, topLeft, bottomRight);
+            mandelbrotDrawer.Draw(imageSize, topLeft, bottomRight, maxIterationDepth, threshold);
 
             return File(mandelbrotDrawer.ImageBytes, "image/png");
         }
