@@ -3,21 +3,22 @@ namespace MandelbrotSet.Models
 {
     public struct ComplexNumber
     {
-        private readonly double _realPart;
-        public double RealPart { get { return _realPart; } }
-
-        private readonly double _imaginaryPart;
-        public double ImaginaryPart { get { return _imaginaryPart; } }
+        public double RealPart { get; private set; }
+        public double ImaginaryPart { get; private set; }
 
         public double AbsoluteValueSquared
         {
-            get { return RealPart * RealPart + ImaginaryPart * ImaginaryPart; }
+            get
+            {
+                return RealPart * RealPart + ImaginaryPart * ImaginaryPart;
+            }
         }
 
         public ComplexNumber(double realPart, double imaginaryPart)
+            : this()
         {
-            _realPart = realPart;
-            _imaginaryPart = imaginaryPart;
+            RealPart = realPart;
+            ImaginaryPart = imaginaryPart;
         }
 
         public ComplexNumber Add(ComplexNumber other)
