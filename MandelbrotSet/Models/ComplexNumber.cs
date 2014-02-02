@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace MandelbrotSet.Models
 {
     public struct ComplexNumber
@@ -10,9 +9,9 @@ namespace MandelbrotSet.Models
         private readonly double _imaginaryPart;
         public double ImaginaryPart { get { return _imaginaryPart; } }
 
-        public double AbsoluteValue
+        public double AbsoluteValueSquared
         {
-            get { return Math.Sqrt(RealPart * RealPart + ImaginaryPart * ImaginaryPart); }
+            get { return RealPart * RealPart + ImaginaryPart * ImaginaryPart; }
         }
 
         public ComplexNumber(double realPart, double imaginaryPart)

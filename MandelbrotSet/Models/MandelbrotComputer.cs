@@ -19,10 +19,8 @@
             {
                 z = z.Multiply(z).Add(c);
 
-                if (z.AbsoluteValue >= _threshold)
-                {
+                if (z.AbsoluteValueSquared >= _threshold * _threshold)
                     return n + 1;
-                }
             }
 
             return _maxIterationDepth;
