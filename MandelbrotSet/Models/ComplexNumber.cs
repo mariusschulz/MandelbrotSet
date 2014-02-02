@@ -21,16 +21,18 @@ namespace MandelbrotSet.Models
             ImaginaryPart = imaginaryPart;
         }
 
-        public ComplexNumber Add(ComplexNumber other)
+        public void Add(ComplexNumber number)
         {
-            return new ComplexNumber(RealPart + other.RealPart, ImaginaryPart + other.ImaginaryPart);
+            RealPart += number.RealPart;
+            ImaginaryPart += number.ImaginaryPart;
         }
 
-        public ComplexNumber Multiply(ComplexNumber other)
+        public void MultiplyWith(ComplexNumber number)
         {
-            return new ComplexNumber(
-                RealPart * other.RealPart - ImaginaryPart * other.ImaginaryPart,
-                RealPart * other.ImaginaryPart + ImaginaryPart * other.RealPart);
+            double currentRealPart = RealPart;
+
+            RealPart = RealPart * number.RealPart - ImaginaryPart * number.ImaginaryPart;
+            ImaginaryPart = currentRealPart * number.ImaginaryPart + ImaginaryPart * number.RealPart;
         }
     }
 }

@@ -3,12 +3,12 @@
     public class MandelbrotComputer
     {
         private readonly int _maxIterationDepth;
-        private readonly double _threshold;
+        private readonly double _thresholdSquared;
 
         public MandelbrotComputer(int maxIterationDepth, double threshold)
         {
             _maxIterationDepth = maxIterationDepth;
-            _threshold = threshold;
+            _thresholdSquared = threshold * threshold;
         }
 
         public int ComputeIterationDepthFor(ComplexNumber z)
@@ -17,9 +17,10 @@
 
             for (int n = 0; n < _maxIterationDepth; n++)
             {
-                z = z.Multiply(z).Add(c);
+                z.MultiplyWith(z);
+                z.Add(c);
 
-                if (z.AbsoluteValueSquared >= _threshold * _threshold)
+                if (z.AbsoluteValueSquared >= _thresholdSquared)
                     return n + 1;
             }
 
