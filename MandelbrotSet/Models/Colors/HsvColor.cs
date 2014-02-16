@@ -17,7 +17,7 @@ namespace MandelbrotSet.Models.Colors
             Value = value;
         }
 
-        public HsvColor MixWith(HsvColor color2, double mixDegree)
+        public HsvColor InterpolateLinearly(HsvColor color2, double mixDegree)
         {
             double hueAvg = (1 - mixDegree) * Hue + mixDegree * color2.Hue;
             double saturationAvg = (1 - mixDegree) * Saturation + mixDegree * color2.Saturation;

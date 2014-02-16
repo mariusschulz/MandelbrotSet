@@ -103,27 +103,27 @@ namespace MandelbrotSet.Models
             };
 
             var interpolatedColors = new List<HsvColor>();
-            interpolatedColors.AddRange(Interpolate(blueColors));
-            interpolatedColors.AddRange(Interpolate(orangeColors));
+            interpolatedColors.AddRange(InterpolateLinearly(blueColors));
+            interpolatedColors.AddRange(InterpolateLinearly(orangeColors));
 
             return interpolatedColors;
         }
 
-        private static IEnumerable<HsvColor> Interpolate(IList<HsvColor> hsvColors)
+        private static IEnumerable<HsvColor> InterpolateLinearly(IList<HsvColor> colors)
         {
             const int interpolationCount = 50;
-            double intervalWidth = (double)interpolationCount / (hsvColors.Count - 1);
+            double intervalWidth = (double)interpolationCount / (colors.Count - 1);
 
             for (int i = 0; i < interpolationCount; i++)
             {
                 int colorIndex = (int)Math.Floor(i / intervalWidth);
 
-                var color1 = hsvColors[colorIndex];
-                var color2 = hsvColors[colorIndex + 1];
+                HsvColor color1 = colors[colorIndex];
+                HsvColor color2 = colors[colorIndex + 1];
 
-                double mixDegree = i / intervalWidth - colorIndex;
+                double interpolationDegree = i / intervalWidth - colorIndex;
 
-                yield return color1.MixWith(color2, mixDegree);
+                yield return color1.InterpolateLinearly(color2, interpolationDegree);
             }
         }
 
