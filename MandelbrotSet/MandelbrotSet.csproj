@@ -147,14 +147,10 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <None Include="combres.config" />
     <Content Include="Global.asax" />
     <Content Include="Content\Stylesheets\Layout.less" />
-    <Content Include="Scripts\Libraries\jQuery\jquery-1.8.3.js" />
-    <Content Include="Scripts\Libraries\jQuery\jquery.d.ts" />
-    <Content Include="Scripts\Libraries\knockout.js\knockout-2.2.0.debug.js" />
-    <Content Include="Scripts\Libraries\knockout.js\knockout.d.ts" />
+    <Content Include="Scripts\Libraries\jquery-2.1.0.js" />
     <Content Include="Scripts\Views\Home\Index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -167,9 +163,7 @@
     <Content Include="Content\Stylesheets\Reset.less" />
     <Content Include="Content\Stylesheets\Headings.less" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
