@@ -10,9 +10,12 @@ namespace MandelbrotSet.Models
 {
     public class MandelbrotDrawer
     {
+        private const int COLOR_DENSITY = 5;
+        private const int COLOR_INTERPOLATION_FACTOR = 1000;
+
         public byte[] Draw(Size imageSize, ComplexNumber topLeft, ComplexNumber bottomRight, int maxIterationDepth = 199, double threshold = 2.0)
         {
-            int[,] iterations = CalculateIterationDepths(imageSize, topLeft, bottomRight, maxIterationDepth, threshold);
+            IterationValue[,] iterations = CalculateIterationDepths(imageSize, topLeft, bottomRight, maxIterationDepth, threshold);
 
             using (var bitmap = new Bitmap(imageSize.Width, imageSize.Height))
             {
@@ -21,9 +24,9 @@ namespace MandelbrotSet.Models
             }
         }
 
-        private static int[,] CalculateIterationDepths(Size imageSize, ComplexNumber topLeft, ComplexNumber bottomRight, int maxIterationDepth, double threshold)
+        private static IterationValue[,] CalculateIterationDepths(Size imageSize, ComplexNumber topLeft, ComplexNumber bottomRight, int maxIterationDepth, double threshold)
         {
-            int[,] iterations = new int[imageSize.Width, imageSize.Height];
+            IterationValue[,] iterations = new IterationValue[imageSize.Width, imageSize.Height];
 
             double realRange = bottomRight.RealPart - topLeft.RealPart;
             double imaginaryRange = topLeft.ImaginaryPart - bottomRight.ImaginaryPart;
@@ -52,7 +55,7 @@ namespace MandelbrotSet.Models
             return iterations;
         }
 
-        private static unsafe void DrawMandelbrotSet(Bitmap bitmap, int[,] iterations, int maxIterationDepth)
+        private static unsafe void DrawMandelbrotSet(Bitmap bitmap, IterationValue[,] iterations, int maxIterationDepth)
         {
             var entireImageArea = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
             BitmapData imageData = bitmap.LockBits(entireImageArea, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
@@ -61,7 +64,7 @@ namespace MandelbrotSet.Models
             byte* firstPixel = (byte*)imageData.Scan0.ToPointer();
             int stride = imageData.Stride;
 
-            var interpolatedColors = InterpolateColors();
+            var interpolatedColors = InterpolateColors(maxIterationDepth);
 
             for (int y = 0; y < imageData.Height; y++)
             {
@@ -74,8 +77,7 @@ namespace MandelbrotSet.Models
                     int greenIndex = blueIndex + 1;
                     int redIndex = blueIndex + 2;
 
-                    int iterationDepth = iterations[x, y];
-                    var color = GetInterpolatedColor(interpolatedColors, iterationDepth, maxIterationDepth);
+                    var color = GetInterpolatedColor(interpolatedColors, iterations[x, y], maxIterationDepth);
 
                     row[blueIndex] = color.B;
                     row[greenIndex] = color.G;
@@ -86,7 +88,7 @@ namespace MandelbrotSet.Models
             bitmap.UnlockBits(imageData);
         }
 
-        private static List<HsvColor> InterpolateColors()
+        private static List<HsvColor> InterpolateColors(int maxIterationDepth)
         {
             HsvColor[] blueColors =
             {
@@ -103,15 +105,15 @@ namespace MandelbrotSet.Models
             };
 
             var interpolatedColors = new List<HsvColor>();
-            interpolatedColors.AddRange(InterpolateLinearly(blueColors));
-            interpolatedColors.AddRange(InterpolateLinearly(orangeColors));
+            interpolatedColors.AddRange(InterpolateLinearly(blueColors, maxIterationDepth));
+            interpolatedColors.AddRange(InterpolateLinearly(orangeColors, maxIterationDepth));
 
             return interpolatedColors;
         }
 
-        private static IEnumerable<HsvColor> InterpolateLinearly(IList<HsvColor> colors)
+        private static IEnumerable<HsvColor> InterpolateLinearly(IList<HsvColor> colors, int maxIterationDepth)
         {
-            const int interpolationCount = 50;
+            int interpolationCount = COLOR_INTERPOLATION_FACTOR * maxIterationDepth;
             double intervalWidth = (double)interpolationCount / (colors.Count - 1);
 
             for (int i = 0; i < interpolationCount; i++)
@@ -127,15 +129,13 @@ namespace MandelbrotSet.Models
             }
         }
 
-        private static Color GetInterpolatedColor(IList<HsvColor> interpolatedColors, int iterationDepth, int maxIterationDepth)
+        private static Color GetInterpolatedColor(IList<HsvColor> interpolatedColors, IterationValue iterationValue, int maxIterationDepth)
         {
-            if (iterationDepth == maxIterationDepth)
+            if (iterationValue.Depth == maxIterationDepth)
                 return Color.Black;
 
-            const int COLOR_DENSITY = 3;
-
-            double iterationPercentage = (double)iterationDepth / maxIterationDepth;
-            double index = (iterationPercentage * interpolatedColors.Count * COLOR_DENSITY) % interpolatedColors.Count;
+            double v = iterationValue.Depth - Math.Log(Math.Log(iterationValue.AbsoluteValue) / Math.Log(maxIterationDepth), 2);
+            double index = (int)(v * COLOR_DENSITY * COLOR_INTERPOLATION_FACTOR) % interpolatedColors.Count;
 
             return interpolatedColors[(int)index].ToColor();
         }

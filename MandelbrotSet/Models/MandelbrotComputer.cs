@@ -11,7 +11,7 @@
             _thresholdSquared = threshold * threshold;
         }
 
-        public int ComputeIterationDepthFor(ComplexNumber z)
+        public IterationValue ComputeIterationDepthFor(ComplexNumber z)
         {
             ComplexNumber c = z;
 
@@ -21,10 +21,10 @@
                 z.Add(c);
 
                 if (z.AbsoluteValueSquared >= _thresholdSquared)
-                    return n + 1;
+                    return new IterationValue(n + 1, z.AbsoluteValue);
             }
 
-            return _maxIterationDepth;
+            return new IterationValue(_maxIterationDepth, double.MinValue);
         }
     }
 }

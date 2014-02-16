@@ -1,10 +1,19 @@
-﻿
+﻿using System;
+
 namespace MandelbrotSet.Models
 {
     public struct ComplexNumber
     {
         public double RealPart { get; private set; }
         public double ImaginaryPart { get; private set; }
+
+        public double AbsoluteValue
+        {
+            get
+            {
+                return Math.Sqrt(AbsoluteValueSquared);
+            }
+        }
 
         public double AbsoluteValueSquared
         {
