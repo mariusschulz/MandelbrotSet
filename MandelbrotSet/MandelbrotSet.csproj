@@ -15,7 +15,7 @@
     <AssemblyName>MandelbrotSet</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -138,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Colors\HsvColor.cs" />
     <Compile Include="Models\ComplexNumber.cs" />
     <Compile Include="Models\MandelbrotComputer.cs" />
     <Compile Include="Models\MandelbrotDrawer.cs" />
@@ -154,14 +155,7 @@
     <Content Include="Scripts\Libraries\jQuery\jquery.d.ts" />
     <Content Include="Scripts\Libraries\knockout.js\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\Libraries\knockout.js\knockout.d.ts" />
-    <Content Include="Scripts\Views\Home\ComplexNumber.js">
-      <DependentUpon>ComplexNumber.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\Views\Home\ComplexNumber.ts" />
-    <Content Include="Scripts\Views\Home\Index.js">
-      <DependentUpon>Index.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\Views\Home\Index.ts" />
+    <Content Include="Scripts\Views\Home\Index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -206,7 +200,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11641/</IISUrl>
+          <IISUrl>http://localhost/mandelbrot</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

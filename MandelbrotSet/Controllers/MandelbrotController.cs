@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Web.Mvc;
 using MandelbrotSet.Models;
@@ -17,9 +16,9 @@ namespace MandelbrotSet.Controllers
             var bottomRight = new ComplexNumber(realTo, imaginaryTo);
 
             var mandelbrotDrawer = new MandelbrotDrawer();
-            mandelbrotDrawer.Draw(imageSize, topLeft, bottomRight, maxIterationDepth, threshold);
+            byte[] mandelbrotBytes = mandelbrotDrawer.Draw(imageSize, topLeft, bottomRight, maxIterationDepth, threshold);
 
-            return File(mandelbrotDrawer.ImageBytes, "image/png");
+            return File(mandelbrotBytes, "image/png");
         }
 
         private static Size GetImageSize(int width, int height)
