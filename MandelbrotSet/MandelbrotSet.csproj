@@ -151,10 +151,7 @@
     <None Include="combres.config" />
     <Content Include="Global.asax" />
     <Content Include="Content\Stylesheets\Layout.less" />
-    <Content Include="Scripts\Libraries\jQuery\jquery-1.8.3.js" />
-    <Content Include="Scripts\Libraries\jQuery\jquery.d.ts" />
-    <Content Include="Scripts\Libraries\knockout.js\knockout-2.2.0.debug.js" />
-    <Content Include="Scripts\Libraries\knockout.js\knockout.d.ts" />
+    <Content Include="Scripts\Libraries\jQuery\jquery-2.1.0.js" />
     <Content Include="Scripts\Views\Home\Index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
