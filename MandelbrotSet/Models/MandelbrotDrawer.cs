@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using MandelbrotSet.Models.Colors;
 
@@ -93,25 +92,19 @@ namespace MandelbrotSet.Models
             {
                 new HsvColor(236, 1, 0.37),
                 new HsvColor(200, 1, 1),
-                new HsvColor(190, 0, 1),
+                new HsvColor(190, 0, 1)
             };
 
             HsvColor[] orangeColors =
             {
                 new HsvColor(54, 0, 1),
                 new HsvColor(54, 1, 1),
-                new HsvColor(34, 1, 0.8),
+                new HsvColor(34, 1, 0.8)
             };
 
             var interpolatedColors = new List<HsvColor>();
-            var blueTones = Interpolate(blueColors).ToList();
-            var orangeTones = Interpolate(orangeColors).ToList();
-
-            for (int i = 0; i < 3; i++)
-            {
-                interpolatedColors.AddRange(blueTones);
-                interpolatedColors.AddRange(orangeTones);
-            }
+            interpolatedColors.AddRange(Interpolate(blueColors));
+            interpolatedColors.AddRange(Interpolate(orangeColors));
 
             return interpolatedColors;
         }
@@ -130,9 +123,7 @@ namespace MandelbrotSet.Models
 
                 double mixDegree = i / intervalWidth - colorIndex;
 
-                var mixedColor = color1.MixWith(color2, mixDegree);
-
-                yield return mixedColor;
+                yield return color1.MixWith(color2, mixDegree);
             }
         }
 
@@ -141,10 +132,12 @@ namespace MandelbrotSet.Models
             if (iterationDepth == maxIterationDepth)
                 return Color.Black;
 
-            double iterationPercentage = (double)iterationDepth / maxIterationDepth;
-            int index = (int)(iterationPercentage * interpolatedColors.Count);
+            const int COLOR_DENSITY = 3;
 
-            return interpolatedColors[index].ToColor();
+            double iterationPercentage = (double)iterationDepth / maxIterationDepth;
+            double index = (iterationPercentage * interpolatedColors.Count * COLOR_DENSITY) % interpolatedColors.Count;
+
+            return interpolatedColors[(int)index].ToColor();
         }
 
         private static byte[] SaveImageToByteArray(Image image)

@@ -8,8 +8,8 @@
     var aspectRatio = (realTo - realFrom) / (imaginaryFrom - imaginaryTo),
         height = Math.round(width / aspectRatio);
 
-    var $canvas = $("#mandelbrot-canvas");
-    $canvas.attr("src", $canvas.data("drawingActionUrl") + "/"
+    var $image = $("#mandelbrot-image");
+    $image.attr("src", $image.data("drawingActionUrl") + "/"
         + width + "-" + height + "/"
         + "(" + realFrom + "," + imaginaryFrom + ")-"
         + "(" + realTo + "," + imaginaryTo + ")/"
